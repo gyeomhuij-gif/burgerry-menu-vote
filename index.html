@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f3ec">
+    <meta name="description" content="버거리 나주혁신점 메뉴를 고르고 함께 투표해요.">
+    <title>오늘 뭐 먹지? | 버거리 메뉴 투표</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="버거리 메뉴 투표 홈">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="brand-name">burger<span>ly</span></span>
+        </a>
+        <div class="topbar-right">
+          <span class="location-dot" aria-hidden="true"></span>
+          <span>버거리 나주혁신점</span>
+          <span class="today-label" id="today-label"></span>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-dot"></span> LUNCH VOTE</p>
+            <h1 id="hero-title">오늘 점심,<br><span>뭐 먹을지</span> 골라볼까요?</h1>
+            <p class="hero-description">먹고 싶은 메뉴를 고르고 투표해 주세요.<br>가장 많은 표를 받은 메뉴로 정해요!</p>
+            <a class="hero-cta" href="#menu-section">메뉴 둘러보기 <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="hero-sun"></div>
+            <div class="hero-spark spark-one">✦</div>
+            <div class="hero-spark spark-two">✳</div>
+            <div class="hero-burger">
+              <div class="burger-top"><i></i><i></i><i></i></div>
+              <div class="burger-lettuce"></div>
+              <div class="burger-cheese"></div>
+              <div class="burger-patty"></div>
+              <div class="burger-bottom"></div>
+            </div>
+            <div class="hero-stamp"><span>GOOD<br>MOOD</span><b>♥</b></div>
+            <div class="hero-caption">MADE FOR<br>YOUR LUNCH</div>
+          </div>
+          <div class="hero-bottom">
+            <span>GOOD FOOD, GOOD MOOD</span>
+            <span class="hero-bottom-right">PICK YOUR BURGER <b>✳</b></span>
+          </div>
+        </section>
+
+        <section class="summary-strip" aria-label="투표 현황">
+          <div class="summary-message">
+            <span class="summary-icon" aria-hidden="true">✳</span>
+            <div><strong>점심 메뉴 투표</strong><span>원하는 메뉴를 선택하고 의견을 모아보세요.</span></div>
+          </div>
+          <div class="summary-stats">
+            <div><strong id="participant-count">0</strong><span>명 참여</span></div>
+            <div class="stat-divider"></div>
+            <div><strong id="leading-votes">0</strong><span>최고 득표</span></div>
+          </div>
+        </section>
+
+        <div class="content-layout">
+          <section class="menu-area" id="menu-section" aria-labelledby="menu-heading">
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">THE MENU</p>
+                <h2 id="menu-heading">오늘의 메뉴</h2>
+              </div>
+              <p class="menu-hint"><span aria-hidden="true">☝</span> 메뉴를 눌러 선택해 주세요</p>
+            </div>
+            <div class="filter-tabs" role="group" aria-label="메뉴 종류">
+              <button class="filter-tab is-active" type="button" data-filter="all" aria-pressed="true">전체 메뉴</button>
+              <button class="filter-tab" type="button" data-filter="classic" aria-pressed="false">시그니처</button>
+              <button class="filter-tab" type="button" data-filter="shrimp" aria-pressed="false">새우버거</button>
+              <button class="filter-tab" type="button" data-filter="chicken" aria-pressed="false">치킨버거</button>
+            </div>
+            <div class="menu-grid" id="menu-grid" aria-live="polite"></div>
+            <p class="source-note">나주혁신점 네이버 주문 메뉴를 기준으로 정리했어요. 세트 사이드 변경 가능 여부와 추가 금액은 매장 주문 화면에서 확인해 주세요. <a href="https://map.naver.com/p/entry/place/1446888132" target="_blank" rel="noreferrer">네이버 플레이스 메뉴 ↗</a></p>
+          </section>
+
+          <aside class="vote-column" aria-label="투표하기 및 결과">
+            <section class="vote-card" aria-labelledby="vote-heading">
+              <div class="vote-card-header">
+                <span class="vote-icon" aria-hidden="true">♥</span>
+                <div><p class="section-kicker">YOUR PICK</p><h2 id="vote-heading">내 메뉴 고르기</h2></div>
+              </div>
+              <div class="selection-summary" id="selection-summary">
+                <span class="selection-burger" aria-hidden="true">🍔</span>
+                <div><span class="selection-label">선택한 메뉴</span><strong id="selected-name">메뉴를 먼저 골라주세요</strong></div>
+                <span class="selection-check" aria-hidden="true">✓</span>
+              </div>
+
+              <fieldset class="option-group meal-type-group">
+                <legend>주문 구성 <span>단품 또는 세트</span></legend>
+                <div class="option-list">
+                  <label class="option-chip"><input type="radio" name="meal-type" value="set" checked><span>🍔 세트</span></label>
+                  <label class="option-chip"><input type="radio" name="meal-type" value="single"><span>버거 단품</span></label>
+                </div>
+              </fieldset>
+
+              <fieldset class="option-group" id="side-fieldset">
+                <legend>세트 사이드 <span>원하는 사이드로 변경</span></legend>
+                <div class="option-list" id="side-options">
+                  <label class="option-chip"><input type="radio" name="side" value="프렌치프라이(L)" checked><span>🍟 프렌치프라이(L)</span></label>
+                  <label class="option-chip"><input type="radio" name="side" value="해쉬브라운"><span>🥔 해쉬브라운</span></label>
+                  <label class="option-chip"><input type="radio" name="side" value="통모짜치즈스틱"><span>🧀 통모짜치즈스틱</span></label>
+                  <label class="option-chip"><input type="radio" name="side" value="치즈스틱"><span>🧀 치즈스틱</span></label>
+                  <label class="option-chip"><input type="radio" name="side" value="새우링"><span>🍤 새우링</span></label>
+                  <label class="option-chip"><input type="radio" name="side" value="양념너겟(멕시칸칠리)"><span>🍗 양념너겟(멕시칸칠리)</span></label>
+                  <label class="option-chip"><input type="radio" name="side" value="양념너겟(샤워크림어니언)"><span>🍗 양념너겟(샤워크림어니언)</span></label>
+                  <label class="option-chip"><input type="radio" name="side" value="코울슬로"><span>🥗 코울슬로</span></label>
+                  <label class="option-chip"><input type="radio" name="side" value="콘샐러드"><span>🥗 콘샐러드</span></label>
+                  <label class="option-chip"><input type="radio" name="side" value="치킨너겟"><span>🍗 치킨너겟</span></label>
+                  <label class="option-chip"><input type="radio" name="side" value="크리스피치킨텐더"><span>🍗 크리스피치킨텐더</span></label>
+                  <label class="option-chip"><input type="radio" name="side" value="양념감자(멕시칸칠리)"><span>🍟 양념감자(멕시칸칠리)</span></label>
+                  <label class="option-chip"><input type="radio" name="side" value="양념감자(샤워크림어니언)"><span>🍟 양념감자(샤워크림어니언)</span></label>
+                  <label class="option-chip"><input type="radio" name="side" value="어니언링"><span>🧅 어니언링</span></label>
+                  <label class="option-chip"><input type="radio" name="side" value="버팔로윙&스틱"><span>🍗 버팔로윙&amp;스틱</span></label>
+                </div>
+              </fieldset>
+
+              <fieldset class="option-group drink-group" id="drink-fieldset">
+                <legend>음료 <span>취향대로 골라요</span></legend>
+                <div class="option-list">
+                  <label class="option-chip"><input type="radio" name="drink" value="펩시콜라 355ml" checked><span>🥤 펩시콜라 355ml</span></label>
+                  <label class="option-chip"><input type="radio" name="drink" value="펩시제로콜라 355ml"><span>🥤 펩시제로콜라 355ml</span></label>
+                  <label class="option-chip"><input type="radio" name="drink" value="칠성사이다 355ml"><span>🥤 칠성사이다 355ml</span></label>
+                  <label class="option-chip"><input type="radio" name="drink" value="탐스오렌지 355ml"><span>🍊 탐스오렌지 355ml</span></label>
+                  <label class="option-chip"><input type="radio" name="drink" value="트레비레몬 355ml"><span>🍋 트레비레몬 355ml</span></label>
+                  <label class="option-chip"><input type="radio" name="drink" value="아메리카노(ICE)"><span>🧊 아메리카노(ICE)</span></label>
+                  <label class="option-chip"><input type="radio" name="drink" value="아메리카노(HOT)"><span>☕ 아메리카노(HOT)</span></label>
+                  <label class="option-chip"><input type="radio" name="drink" value="아이스티"><span>🧋 아이스티</span></label>
+                  <label class="option-chip"><input type="radio" name="drink" value="오렌지주스"><span>🍊 오렌지주스</span></label>
+                  <label class="option-chip"><input type="radio" name="drink" value="샤인머스캣에이드"><span>🍇 샤인머스캣에이드</span></label>
+                  <label class="option-chip"><input type="radio" name="drink" value="자몽에이드"><span>🍊 자몽에이드</span></label>
+                  <label class="option-chip"><input type="radio" name="drink" value="한라봉에이드"><span>🍊 한라봉에이드</span></label>
+                </div>
+              </fieldset>
+
+              <form id="vote-form" novalidate>
+                <label class="name-label" for="voter-name">이름 또는 별명</label>
+                <div class="name-input-wrap">
+                  <span aria-hidden="true">✎</span>
+                  <input id="voter-name" name="name" type="text" maxlength="20" autocomplete="nickname" placeholder="예: 버거왕 민수" required>
+                </div>
+                <p class="form-hint" id="form-hint">이름은 중복 투표 방지와 참여자 수 집계에만 사용돼요.</p>
+                <button class="submit-vote" type="submit" disabled>이 메뉴로 투표하기 <span aria-hidden="true">↗</span></button>
+                <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+              </form>
+            </section>
+
+            <section class="results-card" aria-labelledby="results-heading">
+              <div class="results-heading">
+                <div><p class="section-kicker">LIVE RESULTS</p><h2 id="results-heading">실시간 투표 결과</h2></div>
+                <span class="live-badge" id="sync-status"><i></i><span>LIVE</span></span>
+              </div>
+              <ol class="results-list" id="results-list"></ol>
+              <div class="results-footer"><span class="people-icon" aria-hidden="true">♙</span><span id="voter-list-label">아직 참여자가 없어요</span></div>
+              <div class="order-sheet">
+                <div class="order-sheet-head"><h3>누가 뭘 골랐나요?</h3><button class="copy-order" type="button" id="copy-order">주문서 복사</button></div>
+                <ul class="order-list" id="order-list"></ul>
+              </div>
+              <button class="reset-button" type="button" id="reset-votes">투표 결과 초기화</button>
+            </section>
+          </aside>
+        </div>
+      </main>
+
+      <footer class="footer">
+        <a class="brand footer-brand" href="#" aria-label="버거리 메뉴 투표 홈">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="brand-name">burger<span>ly</span></span>
+        </a>
+        <p>함께 고르면 더 맛있는 점심 <span>♥</span></p>
+        <span class="footer-location">NAJU INNOVATION</span>
+      </footer>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

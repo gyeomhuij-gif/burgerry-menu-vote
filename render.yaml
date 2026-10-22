@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: burgerry-menu-vote
+    runtime: node
+    plan: free
+    buildCommand: echo "no build"
+    startCommand: node server.js
+    healthCheckPath: /
+    envVars:
+      - key: ADMIN_KEY
+        sync: false
