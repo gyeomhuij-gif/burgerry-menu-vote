@@ -171,6 +171,8 @@ function render() {
   renderMenu();
   renderResults();
   renderSelection();
+  submitVoteButton.disabled = Boolean(state.closed);
+  if (state.closed) formMessage.textContent = "투표가 마감되었어요. 주문 진행 중입니다.";
 }
 
 function showToast(message) {
@@ -271,7 +273,7 @@ voteForm.addEventListener("submit", async event => {
     console.error("투표를 등록하지 못했습니다.", error);
     formMessage.textContent = error.message || "투표를 등록하지 못했어요. 잠시 후 다시 시도해 주세요.";
   } finally {
-    submitVoteButton.disabled = false;
+    submitVoteButton.disabled = Boolean(state.closed);
   }
 });
 
@@ -317,7 +319,6 @@ async function initialize() {
     syncStatus.textContent = "연결 오류";
     formMessage.textContent = "서버에 연결할 수 없어요. 앱 서버를 실행한 뒤 새로고침해 주세요.";
   } finally {
-    submitVoteButton.disabled = false;
     render();
   }
 }

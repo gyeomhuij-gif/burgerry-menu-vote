@@ -67,7 +67,14 @@ const STATIC_FILES = new Map([
   ["/index.html", ["index.html", "text/html; charset=utf-8"]],
   ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
   ["/app.js", ["app.js", "text/javascript; charset=utf-8"]],
+  ["/admin", ["admin.html", "text/html; charset=utf-8"]],
+  ["/admin.html", ["admin.html", "text/html; charset=utf-8"]],
+  ["/admin.js", ["admin.js", "text/javascript; charset=utf-8"]],
 ]);
+
+function isAdmin(request) {
+  return !ADMIN_KEY || request.headers["x-admin-key"] === ADMIN_KEY;
+}
 
 function getPollDate() {
   const parts = new Intl.DateTimeFormat("en-US", {
@@ -81,7 +88,7 @@ function getPollDate() {
 }
 
 function emptyState() {
-  return { date: getPollDate(), votes: {} };
+  return { date: getPollDate(), closed: false, votes: {} };
 }
 
 function readVotes() {
@@ -136,6 +143,29 @@ function readJsonBody(request) {
 
 async function handleRequest(request, response) {
   const url = new URL(request.url, `http://${request.headers.host || "localhost"}`);
+  if (url.pathname === "/api/close") {
+    if (request.method !== "POST") {
+      response.setHeader("Allow", "POST");
+      respondJson(response, 405, { error: "지원하지 않는 요청입니다." });
+      return;
+    }
+    if (!isAdmin(request)) {
+      respondJson(response, 403, { error: "관리자 비밀번호가 올바르지 않습니다." });
+      return;
+    }
+    let body;
+    try {
+      body = await readJsonBody(request);
+    } catch (error) {
+      respondJson(response, error.statusCode || 400, { error: error.message });
+      return;
+    }
+    const state = readVotes();
+    state.closed = Boolean(body && body.closed);
+    writeVotes(state);
+    respondJson(response, 200, state);
+    return;
+  }
   if (url.pathname === "/api/votes") {
     if (request.method === "GET") {
       respondJson(response, 200, readVotes());
@@ -165,6 +195,10 @@ async function handleRequest(request, response) {
         return;
       }
       const state = readVotes();
+      if (state.closed) {
+        respondJson(response, 409, { error: "투표가 마감되었어요." });
+        return;
+      }
       const voterId = name.normalize("NFKC").toLocaleLowerCase("ko-KR");
       state.votes[voterId] = {
         name,
@@ -179,7 +213,7 @@ async function handleRequest(request, response) {
       return;
     }
     if (request.method === "DELETE") {
-      if (ADMIN_KEY && request.headers["x-admin-key"] !== ADMIN_KEY) {
+      if (!isAdmin(request)) {
         respondJson(response, 403, { error: "관리자 비밀번호가 올바르지 않습니다." });
         return;
       }
